@@ -45,31 +45,65 @@ func (d *SymmetricalComponentsDistiller) Process(in *distil.InputSet, out *disti
 	for i = 0; i < ns; i++ {
 		var time int64 = in.Get(0, i).T
 
+		var onetwenty = 120 * math.Pi / 180
+
 		var magVa = in.Get(0, i).V
 		var angVa = in.Get(1, i).V * math.Pi / 180
 		var magVb = in.Get(2, i).V
-		var angVb = (in.Get(3, i).V + 120) * math.Pi / 180
+		var angVb = in.Get(3, i).V * math.Pi / 180
                 var magVc = in.Get(4, i).V
-                var angVc = (in.Get(5, i).V - 120) * math.Pi / 180
+                var angVc = in.Get(5, i).V * math.Pi / 180
 
 		var realVa = magVa * math.Cos(angVa)
 		var imagVa = magVa * math.Sin(angVa)
-		var realVb = magVb * math.Cos(angVb)
-                var imagVb = magVb * math.Sin(angVb)
-		var realVc = magVc * math.Cos(angVc)
-                var imagVc = magVc * math.Sin(angVc)
+                var realVb = magVb * math.Cos(angVb+onetwenty)
+                var imagVb = magVb * math.Sin(angVb+onetwenty)
+                var realVc = magVc * math.Cos(angVc-onetwenty)
+                var imagVc = magVc * math.Sin(angVc-onetwenty)
 
 		var realVp = (realVa + realVb + realVc)/3
 		var imagVp = (imagVa + imagVb + imagVc)/3
 
+                var realVd = magVb * math.Cos(angVb-onetwenty)
+                var imagVd = magVb * math.Sin(angVb-onetwenty)
+                var realVe = magVb * math.Cos(angVc+onetwenty)
+                var imagVe = magVb * math.Sin(angVc+onetwenty)
+
+                var realVn = (realVa + realVd + realVe)/3
+                var imagVn = (imagVa + imagVd + imagVe)/3
+
+                var realVf = magVb * math.Cos(angVb)
+                var imagVf = magVb * math.Sin(angVb)
+                var realVg = magVb * math.Cos(angVc)
+                var imagVg = magVb * math.Sin(angVc)
+
+                var realVz = (realVa + realVf + realVg)/3
+                var imagVz = (imagVa + imagVf + imagVg)/3
+
 		var magVp = math.Sqrt(realVp*realVp + imagVp*imagVp)
 		var angVp = math.Atan(imagVp/realVp) * 180 / math.Pi
+                var magVn = math.Sqrt(realVn*realVn + imagVn*imagVn)
+                var angVn = math.Atan(imagVn/realVn) * 180 / math.Pi
+                var magVz = math.Sqrt(realVz*realVz + imagVz*imagVz)
+                var angVz = math.Atan(imagVz/realVz) * 180 / math.Pi
 
 		if !math.IsNaN(magVp) {
 			out.Add(0, time, magVp)
 		}
 		if !math.IsNaN(angVp) {
                         out.Add(1, time, angVp)
+                }
+                if !math.IsNaN(magVn) {
+                        out.Add(2, time, magVn)
+                }
+                if !math.IsNaN(angVn) {
+                        out.Add(3, time, angVn)
+                }
+                if !math.IsNaN(magVz) {
+                        out.Add(4, time, magVz)
+                }
+                if !math.IsNaN(angVz) {
+                        out.Add(5, time, angVz)
                 }
 	}
 }

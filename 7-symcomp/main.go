@@ -17,7 +17,7 @@ func main() {
 			Instance:    instance1,
 			UniqueName:  "pq1_" + strings.Replace(path, "/", "_", -1),
 			InputPaths:  []string{path + "/L1MAG", path + "/L1ANG", path + "/L2MAG", path + "/L2ANG", path + "/L3MAG", path + "/L3ANG"},
-			OutputPaths: []string{path + "/LPMAG", path + "/LPANG"},
+			OutputPaths: []string{path + "/LPMAG", path + "/LPANG", path + "/LNMAG", path + "/LNANG", path + "/LZMAG", path + "/LZANG"},
 		}
 		ds.RegisterDistillate(registration1)
 	}
