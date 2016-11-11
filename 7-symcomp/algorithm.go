@@ -45,12 +45,12 @@ func (d *SymmetricalComponentsDistiller) Process(in *distil.InputSet, out *disti
 	for i = 0; i < ns; i++ {
 		var time int64 = in.Get(0, i).T
 
-		var magVa = in.Get(1, i).V
-		var angVa = in.Get(2, i).V * math.Pi / 180
-		var magVb = in.Get(3, i).V
-		var angVb = in.Get(4, i).V * math.Pi / 180
-                var magVc = in.Get(5, i).V
-                var angVc = in.Get(6, i).V * math.Pi / 180
+		var magVa = in.Get(0, i).V
+		var angVa = in.Get(1, i).V * math.Pi / 180
+		var magVb = in.Get(2, i).V
+		var angVb = (in.Get(3, i).V + 120) * math.Pi / 180
+                var magVc = in.Get(4, i).V
+                var angVc = (in.Get(5, i).V - 120) * math.Pi / 180
 
 		var realVa = magVa * math.Cos(angVa)
 		var imagVa = magVa * math.Sin(angVa)
