@@ -59,8 +59,8 @@ func (d *SymmetricalComponentsDistiller) Process(in *distil.InputSet, out *disti
 		var realVc = magVc * math.Cos(angVc)
                 var imagVc = magVc * math.Sin(angVc)
 
-		var realVp = realVa + realVb + realVc
-		var imagVp = imagVa + imagVb + imagVc
+		var realVp = (realVa + realVb + realVc)/3
+		var imagVp = (imagVa + imagVb + imagVc)/3
 
 		var magVp = math.Sqrt(realVp*realVp + imagVp*imagVp)
 		var angVp = math.Atan(imagVp/realVp) * 180 / math.Pi
